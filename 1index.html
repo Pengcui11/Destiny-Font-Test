@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>算算你的本命字体</title>
+  <style>
+    :root {
+      --bg: #f6f2eb;
+      --card: rgba(255,255,255,0.78);
+      --text: #1f1a17;
+      --sub: #6e6258;
+      --accent: #7b5cff;
+      --accent2: #d7b78a;
+      --line: rgba(31,26,23,0.10);
+      --shadow: 0 14px 40px rgba(0,0,0,0.08);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(123,92,255,.10), transparent 26%),
+        radial-gradient(circle at top right, rgba(215,183,138,.13), transparent 28%),
+        linear-gradient(180deg, #fbf8f4 0%, #f3ede5 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 36px 18px 72px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+      font-size: 13px;
+      color: var(--sub);
+      letter-spacing: .08em;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      margin: 14px auto 0;
+      max-width: 720px;
+      color: var(--sub);
+      line-height: 1.85;
+      font-size: 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .progress-wrap { margin-bottom: 18px; }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--sub);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(123,92,255,0.10);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7b5cff, #b194ff);
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+
+    .question {
+      margin-top: 16px;
+      animation: fadeIn .35s ease;
+    }
+
+    .q-index {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+
+    .q-title {
+      margin: 0 0 22px 0;
+      font-size: clamp(24px, 3.4vw, 36px);
+      line-height: 1.35;
+    }
+
+    .options {
+      display: grid;
+      gap: 14px;
+    }
+
+    .option {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      padding: 18px;
+      background: rgba(255,255,255,0.82);
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.06);
+      border-color: rgba(123,92,255,.35);
+    }
+
+    .option-label {
+      font-size: 13px;
+      color: var(--sub);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .option-text {
+      font-size: 18px;
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
+    .tip {
+      margin-top: 18px;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .result {
+      display: none;
+      margin-top: 26px;
+      animation: fadeIn .45s ease;
+    }
+
+    .result-card {
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow: var(--shadow);
+      background: rgba(255,255,255,0.85);
+    }
+
+    .reveal-head {
+      padding: 18px 22px;
+      background: linear-gradient(90deg, rgba(123,92,255,.08), rgba(215,183,138,.10));
+      border-bottom: 1px solid rgba(31,26,23,0.06);
+      font-size: 14px;
+      color: var(--sub);
+      letter-spacing: .06em;
+    }
+
+    .result-visual {
+      position: relative;
+      min-height: 440px;
+      overflow: hidden;
+      display: flex;
+      align-items: end;
+      padding: 22px;
+      background: linear-gradient(135deg, #efe5d8 0%, #ece4ff 54%, #f8f4ef 100%);
+    }
+
+    .result-visual img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .shade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.30) 100%);
+      z-index: 1;
+    }
+
+    .result-overlay {
+      position: relative;
+      z-index: 2;
+      max-width: 76%;
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.62);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.45);
+    }
+
+    .result-type-en {
+      font-size: 13px;
+      color: var(--sub);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      margin-bottom: 8px;
+    }
+
+    .result-name {
+      margin: 0 0 12px 0;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.08;
+    }
+
+    .result-tags {
+      color: var(--sub);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .result-desc {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.82;
+    }
+
+    .result-body {
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.94));
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,0.82);
+    }
+
+    .box-title {
+      font-size: 13px;
+      color: var(--sub);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .sub-result {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .mini-text {
+      color: var(--sub);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .score-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .score-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.8);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #7b5cff, #a98cff);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: rgba(31,26,23,0.08);
+      color: var(--text);
+    }
+
+    .share-box {
+      margin-top: 18px;
+      border: 1px dashed rgba(123,92,255,.28);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(123,92,255,0.04);
+    }
+
+    .share-text {
+      margin-top: 8px;
+      font-size: 15px;
+      color: var(--sub);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .font-serif { font-family: "Times New Roman","Noto Serif SC","Songti SC","STSong",serif; }
+    .font-sans { font-family: "Helvetica Neue","Arial","PingFang SC","Microsoft YaHei",sans-serif; }
+    .font-slab { font-family: "Georgia","Times New Roman","Noto Serif SC",serif; font-weight: 700; }
+    .font-script { font-family: "Brush Script MT","KaiTi","STKaiti","cursive"; }
+    .font-display { font-family: "Impact","Arial Black","PingFang SC","Microsoft YaHei",sans-serif; letter-spacing: .01em; }
+    .font-variable { font-family: "Trebuchet MS","Avenir Next","Segoe UI","PingFang SC",sans-serif; letter-spacing: .01em; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .wrap { padding: 24px 14px 56px; }
+      .panel { padding: 20px; }
+      .result-visual { min-height: 500px; padding: 16px; }
+      .result-overlay { max-width: 100%; }
+      .summary-grid,
+      .score-list { grid-template-columns: 1fr; }
+      .option-text { font-size: 17px; }
+      .actions { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">DESTINY FONT TEST</div>
+      <h1>算算你的本命字体</h1>
+      <p class="subtitle">
+        你习惯如何理解世界，也决定了你更像哪一种字体。<br>
+        做完 6 道题，看看你的主人格字体是谁，以及你隐藏的副人格。
+      </p>
+    </div>
+
+    <div class="panel" id="quizPanel">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span id="progressText">第 1 / 6 题</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="question" id="questionBox"></div>
+      <div class="tip">请选择更接近你的那个选项，没有标准答案。</div>
+    </div>
+
+    <div class="result" id="resultSection">
+      <div class="result-card">
+        <div class="reveal-head">你的结果已揭晓 · YOUR DESTINY FONT</div>
+
+        <div class="result-visual">
+          <img id="resultImage" src="" alt="人格结果图" />
+          <div class="shade"></div>
+          <div class="result-overlay">
+            <div class="result-type-en" id="resultTypeEn"></div>
+            <h2 class="result-name" id="resultName"></h2>
+            <div class="result-tags" id="resultTags"></div>
+            <p class="result-desc" id="resultDesc"></p>
+          </div>
+        </div>
+
+        <div class="result-body">
+          <div class="summary-grid">
+            <div class="box">
+              <div class="box-title">副人格</div>
+              <div class="sub-result" id="subResultName">—</div>
+              <div class="mini-text" id="subResultDesc">—</div>
+            </div>
+            <div class="box">
+              <div class="box-title">一句短评</div>
+              <div class="mini-text" id="shortComment">—</div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-title">你的得分分布</div>
+            <div class="score-list" id="scoreList"></div>
+          </div>
+
+          <div class="share-box">
+            <div class="box-title">分享文案</div>
+            <div class="share-text" id="shareText"></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-primary" onclick="copyShareText()">复制测试结果</button>
+            <button class="btn-secondary" onclick="copyLink()">复制网页链接</button>
+            <button class="btn-secondary" onclick="restartQuiz()">重新测试</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        title: "你处理信息的方式",
+        options: [
+          { label: "A", text: "先抓重点，越快越好", add: { sans: 1 } },
+          { label: "B", text: "愿意读细节，感受表达", add: { serif: 1 } }
+        ]
+      },
+      {
+        title: "你做决定时更依赖什么",
+        options: [
+          { label: "A", text: "可执行性和确定性", add: { slab: 1, sans: 1 } },
+          { label: "B", text: "直觉和当下感受", add: { script: 1, variable: 1 } }
+        ]
+      },
+      {
+        title: "你的社交状态",
+        options: [
+          { label: "A", text: "更像观察者", add: { slab: 1, sans: 1 } },
+          { label: "B", text: "更像表达者", add: { script: 1, display: 1 } }
+        ]
+      },
+      {
+        title: "你对变化的态度",
+        options: [
+          { label: "A", text: "喜欢稳定和掌控", add: { slab: 1, serif: 1 } },
+          { label: "B", text: "喜欢变化和新鲜感", add: { variable: 1, display: 1 } }
+        ]
+      },
+      {
+        title: "你的审美偏好",
+        options: [
+          { label: "A", text: "极简、干净", add: { sans: 1 } },
+          { label: "B", text: "有装饰、有细节", add: { serif: 1, script: 1 } }
+        ]
+      },
+      {
+        title: "你在团队中的角色",
+        options: [
+          { label: "A", text: "让事情推进的人", add: { sans: 1, slab: 1 } },
+          { label: "B", text: "让事情有趣的人", add: { display: 1, script: 1 } }
+        ]
+      }
+    ];
+
+    const results = {
+      serif: {
+        en: "SERIF",
+        name: "叙事型人格",
+        tags: "信任 / 深度 / 情绪",
+        desc: "你是 Serif，表面克制，内心却在认真对待每一个细节。",
+        short: "你看重表达的层次感，也更容易被细节、记忆和情绪打动。",
+        className: "font-serif",
+        image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/ee26a13f2eb8412eb118ce86122018b0.jpeg"
+      },
+      sans: {
+        en: "SANS SERIF",
+        name: "系统型人格",
+        tags: "清晰 / 理性 / 控制",
+        desc: "你是 Sans Serif，世界再复杂，你也会把它整理成答案。",
+        short: "你偏爱秩序和效率，擅长把混乱信息变成清晰结构。",
+        className: "font-sans",
+        image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/3a967ecbfa504056a16a5471477613ca.jpeg"
+      },
+      slab: {
+        en: "SLAB SERIF",
+        name: "稳定型人格",
+        tags: "可靠 / 抗压 / 现实",
+        desc: "你是 Slab Serif，不追求惊艳，但你永远不会出错。",
+        short: "你给人的感觉是稳、准、耐压，是团队里可以放心依靠的人。",
+        className: "font-slab",
+        image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/65e1ca4ce1ce46628c2a44a91368cb34.jpeg"
+      },
+      script: {
+        en: "SCRIPT",
+        name: "情绪型人格",
+        tags: "感性 / 表达 / 波动",
+        desc: "你是 Script，你不一定稳定，但你一定真实。",
+        short: "你更依赖感受与直觉，也更愿意把真实情绪表达出来。",
+        className: "font-script",
+        image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/321e38bec0244740a87af0cf1df937b4.jpeg"
+      },
+      display: {
+        en: "DISPLAY",
+        name: "舞台型人格",
+        tags: "表现 / 张力 / 存在感",
+        desc: "你是 Display，不需要说太多，你出现本身就是重点。",
+        short: "你自带吸引力，擅长用存在感、态度和风格影响周围的人。",
+        className: "font-display",
+        image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/25f97bad57e1455e8fda11b229cea39d.jpeg"
+      },
+      variable: {
+        en: "VARIABLE FONT",
+        name: "进化型人格（AI型）",
+        tags: "变化 / 适应 / 多面",
+        desc: "你是 Variable Font，你没有固定形状，但你总能成为当下最合适的样子。",
+        short: "你擅长根据环境快速切换状态，是典型的多面、适应型人格。",
+        className: "font-variable",
+        image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/88bda60aadef42918eb4f1faee4f2e6c.jpeg"
+      }
+    };
+
+    const priority = ["variable", "serif", "sans", "slab", "script", "display"];
+    let current = 0;
+    let scores = {};
+
+    function initScores() {
+      scores = {
+        serif: 0,
+        sans: 0,
+        slab: 0,
+        script: 0,
+        display: 0,
+        variable: 0
+      };
+    }
+
+    function updateProgress() {
+      const percent = Math.round((current / questions.length) * 100);
+      document.getElementById("progressFill").style.width = percent + "%";
+      document.getElementById("progressPercent").textContent = percent + "%";
+      document.getElementById("progressText").textContent =
+        `第 ${Math.min(current + 1, questions.length)} / ${questions.length} 题`;
+    }
+
+    function renderQuestion() {
+      updateProgress();
+      const q = questions[current];
+      const box = document.getElementById("questionBox");
+      box.innerHTML = `
+        <div class="q-index">Q${current + 1}</div>
+        <h2 class="q-title">${q.title}</h2>
+        <div class="options">
+          ${q.options.map((opt, i) => `
+            <div class="option" onclick="selectOption(${i})">
+              <div class="option-label">选项 ${opt.label}</div>
+              <div class="option-text">${opt.text}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function selectOption(index) {
+      const selected = questions[current].options[index];
+      Object.keys(selected.add).forEach(key => {
+        scores[key] += selected.add[key];
+      });
+
+      current++;
+      if (current < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function getSortedResults() {
+      return Object.keys(scores).sort((a, b) => {
+        if (scores[b] !== scores[a]) return scores[b] - scores[a];
+        return priority.indexOf(a) - priority.indexOf(b);
+      });
+    }
+
+    function showResult() {
+      document.getElementById("quizPanel").style.display = "none";
+      document.getElementById("resultSection").style.display = "block";
+
+      const sorted = getSortedResults();
+      const topKey = sorted[0];
+      const subKey = sorted[1];
+
+      const top = results[topKey];
+      const sub = results[subKey];
+
+      const nameEl = document.getElementById("resultName");
+      const typeEl = document.getElementById("resultTypeEn");
+      const tagsEl = document.getElementById("resultTags");
+      const descEl = document.getElementById("resultDesc");
+      const imgEl = document.getElementById("resultImage");
+
+      nameEl.className = "result-name " + top.className;
+      typeEl.className = "result-type-en " + top.className;
+      tagsEl.className = "result-tags " + top.className;
+      descEl.className = "result-desc " + top.className;
+
+      typeEl.textContent = top.en;
+      nameEl.textContent = top.name;
+      tagsEl.textContent = top.tags;
+      descEl.textContent = top.desc;
+
+      imgEl.src = top.image;
+      imgEl.style.display = "block";
+      imgEl.onerror = function() {
+        imgEl.style.display = "none";
+      };
+
+      document.getElementById("subResultName").textContent =
+        `${sub.en}｜${sub.name}`;
+      document.getElementById("subResultDesc").textContent =
+        sub.short;
+
+      document.getElementById("shortComment").textContent =
+        `你的主人格偏向「${top.name}」，说明你最核心的气质是 ${top.tags.replaceAll("/", " / ")}；而副人格「${sub.name}」让你在特定情境下展现出更丰富的一面。`;
+
+      const scoreList = document.getElementById("scoreList");
+      scoreList.innerHTML = getSortedResults().map(key => {
+        const item = results[key];
+        return `<div class="score-item"><strong>${item.en}</strong><br>${item.name}：${scores[key]} 分</div>`;
+      }).join("");
+
+      const share = `我测出来的本命字体是【${top.en}｜${top.name}】！
+关键词：${top.tags}
+${top.desc}
+
+我的副人格是【${sub.en}｜${sub.name}】。
+来测测你的本命字体：
+${window.location.href}`;
+
+      document.getElementById("shareText").textContent = share;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function restartQuiz() {
+      current = 0;
+      initScores();
+      document.getElementById("quizPanel").style.display = "block";
+      document.getElementById("resultSection").style.display = "none";
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function copyLink() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("网页链接已复制");
+      }).catch(() => {
+        alert("复制失败，请手动复制地址栏链接");
+      });
+    }
+
+    function copyShareText() {
+      const text = document.getElementById("shareText").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("测试结果已复制");
+      }).catch(() => {
+        alert("复制失败，请手动复制结果文字");
+      });
+    }
+
+    initScores();
+    renderQuestion();
+  </script>
+</body>
+</html>
+
