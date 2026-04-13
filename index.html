@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>算算你的本命字体｜Destiny Font Test</title>
+  <title>测测你的本命字体</title>
   <style>
     :root{
       --bg1:#f8f4ee;
@@ -55,7 +55,7 @@
       letter-spacing:-.03em;
     }
     .subtitle{
-      max-width:720px;
+      max-width:760px;
       margin:14px auto 0;
       color:var(--sub);
       line-height:1.9;
@@ -161,7 +161,7 @@
     .flip-card{
       position:relative;
       width:100%;
-      min-height:720px;
+      min-height:980px;
       transform-style:preserve-3d;
       transition:transform 1s cubic-bezier(.2,.7,.2,1);
     }
@@ -379,7 +379,7 @@
 
     @media (max-width:768px){
       .panel{padding:20px}
-      .flip-card{min-height:820px}
+      .flip-card{min-height:1160px}
       .visual{min-height:420px}
       .grid,.score-list{grid-template-columns:1fr}
       .actions{flex-direction:column}
@@ -393,10 +393,10 @@
   <div class="wrap">
     <div class="hero">
       <div class="badge">DESTINY FONT TEST</div>
-      <h1>算算你的本命字体</h1>
+      <h1>测测你的本命字体</h1>
       <div class="subtitle">
-        每个人都有一张属于自己的字体人格卡。<br>
-        完成 6 道题，抽取你的本命字体，并揭晓隐藏副人格。
+        如果你是一种字体，你会出现在谁的海报、哪种屏幕、什么样的标题里？<br>
+        完成 6 道有趣选择，测出你的本命字体、隐藏倾向，以及 AI 最可能推荐给你的第二字体。
       </div>
     </div>
 
@@ -408,7 +408,7 @@
       <div class="bar"><div class="fill" id="progressFill"></div></div>
 
       <div id="questionBox"></div>
-      <div class="tip">请选择更接近你的选项。没有标准答案，只有更像你的气质。</div>
+      <div class="tip">请选择更接近你的选项。没有标准答案，只有更像你的字体气质。</div>
     </div>
 
     <div class="result" id="resultSection">
@@ -420,7 +420,7 @@
             <div class="front-inner">
               <div class="front-title">YOUR DESTINY FONT</div>
               <div class="front-name">命运卡牌</div>
-              <div class="front-desc">请稍等片刻，翻开这张卡，看看你最像哪一种字体人格。</div>
+              <div class="front-desc">请稍等片刻，翻开这张卡，看看你的本命字体会是哪一种。</div>
             </div>
           </div>
 
@@ -438,7 +438,7 @@
             <div class="body">
               <div class="grid">
                 <div class="box">
-                  <div class="box-title">副人格</div>
+                  <div class="box-title">隐藏倾向</div>
                   <div class="box-main" id="subName">—</div>
                   <div class="box-text" id="subDesc">—</div>
                 </div>
@@ -446,6 +446,24 @@
                   <div class="box-title">一句短评</div>
                   <div class="box-text" id="shortComment">—</div>
                 </div>
+              </div>
+
+              <div class="box">
+                <div class="box-title">AI影响度</div>
+                <div class="box-main" id="aiLevel">—</div>
+                <div class="box-text" id="aiDesc">—</div>
+              </div>
+
+              <div class="box">
+                <div class="box-title">你会出现在哪种设计场景</div>
+                <div class="box-main" id="sceneName">—</div>
+                <div class="box-text" id="sceneDesc">—</div>
+              </div>
+
+              <div class="box">
+                <div class="box-title">AI推荐给你的第二字体</div>
+                <div class="box-main" id="aiFontName">—</div>
+                <div class="box-text" id="aiFontDesc">—</div>
               </div>
 
               <div class="box">
@@ -459,9 +477,9 @@
               </div>
 
               <div class="actions">
-                <button class="primary" onclick="copyShare()">复制测试结果</button>
-                <button class="secondary" onclick="copyLink()">复制网页链接</button>
-                <button class="secondary" onclick="restartQuiz()">重新抽卡</button>
+                <button class="primary" onclick="copyShare()">复制我的字体卡</button>
+                <button class="secondary" onclick="copyLink()">分享这张测试</button>
+                <button class="secondary" onclick="restartQuiz()">重新测一次</button>
               </div>
             </div>
           </div>
@@ -474,45 +492,45 @@
   <script>
     const questions = [
       {
-        title: "看到一个新项目时，你的第一反应更接近哪一种？",
+        title: "如果你要把自己变成一张海报标题，你更想被看成哪一种？",
         options: [
-          { label: "A", text: "先拆解结构，搞清目标和路径。", add: { sans: 2 } },
-          { label: "B", text: "先感受气质，想象它最终会长成什么样。", add: { serif: 2 } }
+          { label: "A", text: "干净、冷静、一下就能读懂，像高质感品牌首页。", add: { sans: 2 }, ai: 2 },
+          { label: "B", text: "有故事感和细节，像一本会被认真翻阅的书封。", add: { serif: 2 }, ai: 0 }
         ]
       },
       {
-        title: "面对不确定性，你更常用哪种方式应对？",
+        title: "如果别人只允许你用一种字体形容自己，你更希望是哪种状态？",
         options: [
-          { label: "A", text: "建立规则和边界，让事情先稳定下来。", add: { slab: 2 } },
-          { label: "B", text: "边走边调，快速适应新的变量。", add: { variable: 2 } }
+          { label: "A", text: "稳得住场面，像一句写在招牌上的承诺。", add: { slab: 2 }, ai: 0 },
+          { label: "B", text: "会变化、会适应，像能在不同屏幕里自由切换的未来字体。", add: { variable: 2 }, ai: 2 }
         ]
       },
       {
-        title: "在社交场合里，你更容易呈现哪一面？",
+        title: "如果你的情绪被做成字形，你更像哪一种？",
         options: [
-          { label: "A", text: "细腻、真诚，愿意表达感受。", add: { script: 2 } },
-          { label: "B", text: "有存在感，容易被人一眼记住。", add: { display: 2 } }
+          { label: "A", text: "有笔触、有温度，像刚写完还没干透的签名字。", add: { script: 2 }, ai: 0 },
+          { label: "B", text: "风格拉满、辨识度超高，像谁看了都会记住的主标题。", add: { display: 2 }, ai: 1 }
         ]
       },
       {
-        title: "你更认同哪种审美判断？",
+        title: "当你刷到一张设计图，最先让你心动的通常是什么？",
         options: [
-          { label: "A", text: "越清晰越高级，少即是多。", add: { sans: 2 } },
-          { label: "B", text: "层次和细节会让表达更有韵味。", add: { serif: 2 } }
+          { label: "A", text: "版面干净，字体清楚到像空气一样自然。", add: { sans: 2 }, ai: 2 },
+          { label: "B", text: "字里有层次和韵味，越看越有感觉。", add: { serif: 2 }, ai: 0 }
         ]
       },
       {
-        title: "别人最容易因为什么而信任你？",
+        title: "如果你要替一个品牌传递“值得相信”，你会选哪种字感？",
         options: [
-          { label: "A", text: "我很稳，能扛事，也能把事情落地。", add: { slab: 2 } },
-          { label: "B", text: "我有弹性，能快速切换角色和状态。", add: { variable: 2 } }
+          { label: "A", text: "厚实、有重量，像一句说出口就能落地的话。", add: { slab: 2 }, ai: 0 },
+          { label: "B", text: "灵活、适配、在任何设备上都看起来刚刚好。", add: { variable: 2 }, ai: 2 }
         ]
       },
       {
-        title: "如果你要给自己选一种外放方式，你更接近哪种？",
+        title: "如果今天只能用一种方式让全场先注意到你，你会选？",
         options: [
-          { label: "A", text: "把真实情绪和个性流动地表达出来。", add: { script: 2 } },
-          { label: "B", text: "用强烈风格和记忆点让人印象深刻。", add: { display: 2 } }
+          { label: "A", text: "让情绪先流出来，像一行有呼吸感的手写字。", add: { script: 2 }, ai: 0 },
+          { label: "B", text: "让风格先冲出来，像一张一秒抓住眼睛的海报。", add: { display: 2 }, ai: 1 }
         ]
       }
     ];
@@ -520,50 +538,62 @@
     const results = {
       serif: {
         en: "SERIF",
-        name: "叙事型人格",
-        tags: "信任 / 深度 / 情绪",
-        desc: "你是 Serif，克制之下藏着丰富的感受力。你在意细节、语气、层次，也相信真正动人的表达需要时间沉淀。",
-        short: "你偏爱有故事感的表达，也更容易被记忆、文化和细腻情绪打动。",
+        name: "叙事型字体人格",
+        tags: "经典 / 细节 / 故事感",
+        desc: "你最容易被有历史感、层次感和阅读温度的字体吸引。比起第一眼的冲击力，你更在意一种字体是否有余韵、是否经得起细看。对你来说，字体不只是信息工具，也是一种叙事气质。",
+        short: "你偏爱有人文感、文化感和阅读温度的字形，越看越有味道的字体最容易打动你。",
+        sceneName: "一本展览图录、书店海报，或高端品牌的长文案封面",
+        sceneDesc: "如果你是一种字体，你大概率会出现在需要被慢慢阅读、反复回味的地方。你不靠大声吸引注意，而靠细节和气质让人停留。",
         image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/ee26a13f2eb8412eb118ce86122018b0.jpeg"
       },
       sans: {
         en: "SANS SERIF",
-        name: "系统型人格",
-        tags: "清晰 / 理性 / 控制",
-        desc: "你是 Sans Serif，擅长从复杂里提炼核心。你的判断通常清醒直接，喜欢秩序，也能把事情迅速推进。",
-        short: "你对结构、效率和清晰表达有天然偏好，是典型的整理者与推进者。",
+        name: "系统型字体人格",
+        tags: "清晰 / 理性 / 秩序",
+        desc: "你偏爱的字体通常干净、直接、没有多余修饰。你欣赏一眼就能读懂的效率感，也更容易对结构明确、秩序稳定的字形产生好感。对你来说，字体的美感来自清楚、克制和系统性。",
+        short: "你天然偏爱清晰、理性、现代的字体风格，是典型的结构派审美。",
+        sceneName: "科技产品首页、APP界面，或极简主义品牌海报",
+        sceneDesc: "如果你是一种字体，你会出现在最需要效率和清晰度的地方。你的魅力不是装饰，而是把复杂信息整理得一目了然。",
         image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/3a967ecbfa504056a16a5471477613ca.jpeg"
       },
       slab: {
         en: "SLAB SERIF",
-        name: "稳定型人格",
-        tags: "可靠 / 抗压 / 现实",
-        desc: "你是 Slab Serif，不一定最张扬，但总是最让人放心。你擅长给混乱建立秩序，也能把想法真正落到地上。",
-        short: "你给人的感觉稳、准、能扛压，是那种关键时刻很值得依靠的人。",
+        name: "稳定型字体人格",
+        tags: "可靠 / 厚度 / 支撑感",
+        desc: "你偏爱的字体往往有明显骨架和存在感，看起来稳、准、能托住内容。你会被那种扎实、有分量、不轻飘的视觉语言吸引。比起灵巧和花哨，你更认同一种有落点的力量。",
+        short: "你喜欢有厚度、有支撑感的字体，它们给人稳定、可信、能扛事的感觉。",
+        sceneName: "品牌主标题、老牌店招，或强调可信度的宣传物料",
+        sceneDesc: "如果你是一种字体，你会站在最能撑住场面的地方。你给人的不是“轻盈感”，而是那种一看就靠谱的视觉分量。",
         image: "https://transsion-plattech-1219.oss-accelerate.aliyuncs.com/tranai-assets/65e1ca4ce1ce46628c2a44a91368cb34.jpeg"
       },
       script: {
         en: "SCRIPT",
-        name: "情绪型人格",
-        tags: "感性 / 表达 / 流动",
-        desc: "你是 Script，感受比规则更先发生。你重视情绪的真实流动，也擅长把难以言说的细微感受传递给别人。",
-        short: "你拥有细腻、感性和高表达力，情绪既是你的敏感点，也是你的能量来源。",
+        name: "情绪型字体人格",
+        tags: "手写感 / 温度 / 流动",
+        desc: "你会被带有笔触、情绪和呼吸感的字体吸引。你在意字体里是否保留了人的痕迹，是否能传递亲近、真诚和细微情绪。对你来说，字体最动人的地方不是完美，而是有温度。",
+        short: "你偏爱有手写感和情绪流动的字体，真实的人味比标准化更重要。",
+        sceneName: "邀请函、个人品牌页，或一张有情绪的生活方式海报",
+        sceneDesc: "如果你是一种字体，你不会出现在最标准化的位置，而会出现在最能传递情绪和温度的场景里，像一句有呼吸感的话。",
         image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/321e38bec0244740a87af0cf1df937b4.jpeg"
       },
       display: {
         en: "DISPLAY",
-        name: "舞台型人格",
-        tags: "表现 / 张力 / 存在感",
-        desc: "你是 Display，自带高识别度。你知道如何呈现自己，也懂得风格本身就是一种强有力的表达。",
-        short: "你有鲜明的个人气场，通常不需要解释太多，就已经足够吸引目光。",
+        name: "舞台型字体人格",
+        tags: "张力 / 识别度 / 风格",
+        desc: "你喜欢的字体不甘于只传递信息，它还要先被看见。你会天然注意那些有风格、有冲击力、有独特轮廓的字形。对你来说，字体不仅是阅读介质，更是一种视觉态度。",
+        short: "你偏爱高识别度和强风格的字体，视觉记忆点对你来说很重要。",
+        sceneName: "音乐节主视觉、潮流品牌封面，或社交媒体爆款标题",
+        sceneDesc: "如果你是一种字体，你绝不会安静地待在角落里。你会站在视线最先抵达的位置，用风格和张力直接把人抓住。",
         image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/25f97bad57e1455e8fda11b229cea39d.jpeg"
       },
       variable: {
         en: "VARIABLE FONT",
         name: "进化型人格（AI型）",
-        tags: "变化 / 适应 / 多面",
-        desc: "你是 Variable Font，你不会被单一定义束缚。你擅长根据环境快速调整自己，在变化中持续进化，找到最合适的表达方式。",
-        short: "你是典型的适应型、多线程型人格，灵活、开放，也最接近未来感。",
+        tags: "变化 / 适应 / 未来感",
+        desc: "你偏爱的不是一种固定字形，而是一种能随环境变化、根据媒介响应、在系统中持续进化的字体逻辑。你会对动态、参数化、生成式的视觉表达更敏感。对你来说，字体的未来不是静态答案，而是可计算、可调节、可持续进化的过程。",
+        short: "你拥有典型的未来审美，偏爱可变、灵活、适应性强的字体系统。",
+        sceneName: "未来感交互界面、动态视觉系统，或 AI 生成设计实验页面",
+        sceneDesc: "如果你是一种字体，你不会只活在一张海报上，而会出现在会响应、会变化、会进化的界面系统里。你代表的是一种更接近未来的字体想象。",
         image: "https://transsion-platform01.oss-accelerate.aliyuncs.com/tranai-assets/88bda60aadef42918eb4f1faee4f2e6c.jpeg"
       }
     };
@@ -571,6 +601,7 @@
     const priority = ["variable","serif","sans","slab","script","display"];
     let current = 0;
     let scores = {};
+    let aiScore = 0;
 
     function initScores(){
       scores = {
@@ -581,6 +612,7 @@
         display:0,
         variable:0
       };
+      aiScore = 0;
     }
 
     function updateProgress(){
@@ -612,6 +644,7 @@
       Object.keys(selected.add).forEach(key => {
         scores[key] += selected.add[key];
       });
+      aiScore += selected.ai || 0;
       current++;
       if(current < questions.length){
         renderQuestion();
@@ -627,6 +660,59 @@
       });
     }
 
+    function getAiAnalysis(score){
+      if(score <= 3){
+        return {
+          level: "AI影响度：低",
+          desc: "你的字体审美更偏向人文直觉与情绪感知。即使在数字界面和算法推荐高度统一的环境里，你依然更容易被温度、笔触、细节和阅读韵味打动。"
+        };
+      } else if(score <= 7){
+        return {
+          level: "AI影响度：中",
+          desc: "你的字体审美同时保留了人文感和数字感。你既能欣赏有温度、有故事的字体，也会自然接受清晰、高效、适应屏幕的视觉表达。"
+        };
+      } else {
+        return {
+          level: "AI影响度：高",
+          desc: "你的字体审美明显更接近数字界面时代的主流偏好。你会更自然地接受清晰、可变、适应性强、为多场景优化的字体系统，这也是 AI 时代最典型的审美方向之一。"
+        };
+      }
+    }
+
+    function getAiRecommendedFont(topKey, aiScore){
+      const mapping = {
+        serif: { high: "sans", mid: "variable", low: "script" },
+        sans: { high: "variable", mid: "display", low: "serif" },
+        slab: { high: "variable", mid: "sans", low: "serif" },
+        script: { high: "display", mid: "serif", low: "sans" },
+        display: { high: "variable", mid: "sans", low: "script" },
+        variable: { high: "sans", mid: "display", low: "serif" }
+      };
+
+      let level = "mid";
+      if(aiScore <= 3) level = "low";
+      else if(aiScore >= 8) level = "high";
+
+      const key = mapping[topKey][level];
+      return {
+        key,
+        data: results[key]
+      };
+    }
+
+    function getAiRecommendText(topKey, recommendKey, aiScore){
+      const top = results[topKey];
+      const rec = results[recommendKey];
+
+      if(aiScore <= 3){
+        return `你的天然偏好是「${top.en}」，而 AI 也许会温和地把你引向「${rec.en}」。这说明你虽然更偏爱有人味和细节的字体，但系统依然会尝试向你推荐更易传播、或更具情绪标签的风格。`;
+      } else if(aiScore <= 7){
+        return `你的天然偏好是「${top.en}」，而 AI 最可能进一步推荐你尝试「${rec.en}」。这说明你的审美本身就处在人文感与数字感之间，既能接受个性，也能接受系统化表达。`;
+      } else {
+        return `你的天然偏好是「${top.en}」，而 AI 几乎一定会继续把你推向「${rec.en}」。这说明你的审美已经非常适配数字平台与界面逻辑，更容易接受高效率、强适应性和高识别度的字体风格。`;
+      }
+    }
+
     function revealResult(){
       document.getElementById("quizPanel").style.display = "none";
       document.getElementById("resultSection").style.display = "block";
@@ -636,6 +722,9 @@
       const subKey = sorted[1];
       const top = results[topKey];
       const sub = results[subKey];
+      const aiAnalysis = getAiAnalysis(aiScore);
+      const aiRecommend = getAiRecommendedFont(topKey, aiScore);
+      const aiRecText = getAiRecommendText(topKey, aiRecommend.key, aiScore);
 
       document.getElementById("resultImage").src = top.image;
       document.getElementById("resultEn").textContent = top.en;
@@ -647,17 +736,29 @@
       document.getElementById("subDesc").textContent = sub.short;
 
       document.getElementById("shortComment").textContent =
-        `你的主人格偏向「${top.name}」，说明你最核心的气质更接近 ${top.tags.replaceAll("/", " / ")}；而副人格「${sub.name}」让你在不同情境下拥有更丰富、更立体的表达层次。`;
+        `你的本命字体偏向「${top.name}」，说明你最容易被 ${top.tags.replaceAll("/", " / ")} 这一类视觉特质吸引；而隐藏倾向「${sub.name}」则让你的字体审美在不同场景下更立体。`;
 
       document.getElementById("scoreList").innerHTML = sorted.map(key => {
         return `<div class="score-item"><strong>${results[key].en}</strong><br>${results[key].name}：${scores[key]} 分</div>`;
       }).join("");
 
-      const share = `我抽到的本命字体是【${top.en}｜${top.name}】！
-关键词：${top.tags}
-${top.desc}
+      document.getElementById("aiLevel").textContent = aiAnalysis.level;
+      document.getElementById("aiDesc").textContent = aiAnalysis.desc;
+      document.getElementById("sceneName").textContent = top.sceneName;
+      document.getElementById("sceneDesc").textContent = top.sceneDesc;
+      document.getElementById("aiFontName").textContent = `${aiRecommend.data.en}｜${aiRecommend.data.name}`;
+      document.getElementById("aiFontDesc").textContent = aiRecText;
 
-我的隐藏副人格是【${sub.en}｜${sub.name}】。
+      const share = `我测出来的本命字体是【${top.en}｜${top.name}】！
+关键词：${top.tags}
+
+我会出现的设计场景：
+${top.sceneName}
+
+我的隐藏倾向是【${sub.en}｜${sub.name}】。
+${aiAnalysis.level}
+AI推荐给我的第二字体是【${aiRecommend.data.en}｜${aiRecommend.data.name}】。
+
 来测测你的本命字体：
 ${window.location.href}`;
 
