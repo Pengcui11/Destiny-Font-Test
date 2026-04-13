@@ -538,7 +538,7 @@
     const results = {
       serif: {
         en: "SERIF",
-        name: "叙事型字体人格",
+        name: "故事衬线体",
         tags: "经典 / 细节 / 故事感",
         desc: "你最容易被有历史感、层次感和阅读温度的字体吸引。比起第一眼的冲击力，你更在意一种字体是否有余韵、是否经得起细看。对你来说，字体不只是信息工具，也是一种叙事气质。",
         short: "你偏爱有人文感、文化感和阅读温度的字形，越看越有味道的字体最容易打动你。",
@@ -548,7 +548,7 @@
       },
       sans: {
         en: "SANS SERIF",
-        name: "系统型字体人格",
+        name: "理性无衬线体",
         tags: "清晰 / 理性 / 秩序",
         desc: "你偏爱的字体通常干净、直接、没有多余修饰。你欣赏一眼就能读懂的效率感，也更容易对结构明确、秩序稳定的字形产生好感。对你来说，字体的美感来自清楚、克制和系统性。",
         short: "你天然偏爱清晰、理性、现代的字体风格，是典型的结构派审美。",
@@ -558,7 +558,7 @@
       },
       slab: {
         en: "SLAB SERIF",
-        name: "稳定型字体人格",
+        name: "可靠方头体",
         tags: "可靠 / 厚度 / 支撑感",
         desc: "你偏爱的字体往往有明显骨架和存在感，看起来稳、准、能托住内容。你会被那种扎实、有分量、不轻飘的视觉语言吸引。比起灵巧和花哨，你更认同一种有落点的力量。",
         short: "你喜欢有厚度、有支撑感的字体，它们给人稳定、可信、能扛事的感觉。",
@@ -568,7 +568,7 @@
       },
       script: {
         en: "SCRIPT",
-        name: "情绪型字体人格",
+        name: "感性手写体",
         tags: "手写感 / 温度 / 流动",
         desc: "你会被带有笔触、情绪和呼吸感的字体吸引。你在意字体里是否保留了人的痕迹，是否能传递亲近、真诚和细微情绪。对你来说，字体最动人的地方不是完美，而是有温度。",
         short: "你偏爱有手写感和情绪流动的字体，真实的人味比标准化更重要。",
@@ -578,7 +578,7 @@
       },
       display: {
         en: "DISPLAY",
-        name: "舞台型字体人格",
+        name: "先锋展示体",
         tags: "张力 / 识别度 / 风格",
         desc: "你喜欢的字体不甘于只传递信息，它还要先被看见。你会天然注意那些有风格、有冲击力、有独特轮廓的字形。对你来说，字体不仅是阅读介质，更是一种视觉态度。",
         short: "你偏爱高识别度和强风格的字体，视觉记忆点对你来说很重要。",
@@ -588,7 +588,7 @@
       },
       variable: {
         en: "VARIABLE FONT",
-        name: "进化型人格（AI型）",
+        name: "未来进化体（AI型）",
         tags: "变化 / 适应 / 未来感",
         desc: "你偏爱的不是一种固定字形，而是一种能随环境变化、根据媒介响应、在系统中持续进化的字体逻辑。你会对动态、参数化、生成式的视觉表达更敏感。对你来说，字体的未来不是静态答案，而是可计算、可调节、可持续进化的过程。",
         short: "你拥有典型的未来审美，偏爱可变、灵活、适应性强的字体系统。",
@@ -727,8 +727,8 @@
       const aiRecText = getAiRecommendText(topKey, aiRecommend.key, aiScore);
 
       document.getElementById("resultImage").src = top.image;
-      document.getElementById("resultEn").textContent = top.en;
-      document.getElementById("resultName").textContent = top.name;
+      document.getElementById("resultEn").textContent = "YOU ARE";
+      document.getElementById("resultName").textContent = `${top.en}｜${top.name}`;
       document.getElementById("resultTags").textContent = top.tags;
       document.getElementById("resultDesc").textContent = top.desc;
 
@@ -736,7 +736,7 @@
       document.getElementById("subDesc").textContent = sub.short;
 
       document.getElementById("shortComment").textContent =
-        `你的本命字体偏向「${top.name}」，说明你最容易被 ${top.tags.replaceAll("/", " / ")} 这一类视觉特质吸引；而隐藏倾向「${sub.name}」则让你的字体审美在不同场景下更立体。`;
+        `你是「${top.en}｜${top.name}」，说明你最容易被 ${top.tags.replaceAll("/", " / ")} 这一类视觉特质吸引；而隐藏倾向「${sub.en}｜${sub.name}」则让你的字体审美在不同场景下更立体。`;
 
       document.getElementById("scoreList").innerHTML = sorted.map(key => {
         return `<div class="score-item"><strong>${results[key].en}</strong><br>${results[key].name}：${scores[key]} 分</div>`;
